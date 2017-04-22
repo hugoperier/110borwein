@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+## 110borwein.py for last maths project in /home/hugo/Projet/Maths/110borwein
+## 
+## Made by Hugo Perier
+## Login   <hugo@epitech.net>
+## 
+## Started on  Wed Apr 12 17:09:49 2017 Hugo Perier
+## Last update Fri Apr 14 10:11:49 2017 Hugo Perier
+##
+
+import sys
+import math
+
+def borwein(x):
+    fb = 1
+    k = 0
+    n = float(sys.argv[1])
+    while (k <= n):
+        if (x != 0):
+            fb *= math.sin(x / (2 * k + 1)) / (x / (2 * k + 1))
+        k = k + 1
+    return (fb)
+
+def rectangle(n):
+    a, b, N = 0, 5000, 10000
+    h = float((b - a) / (N))
+    i = float(0)
+    res = 0
+    while (i <= 10000 - 1):
+        x = i * h
+        res += borwein(x)
+        i = i + 1
+    res *= h
+    p = res - (math.pi / 2)
+    print ("Rectangles:\nI{:.0f} = {:.10f}".format(arg, res))
+    print ("diff = {:.10f}".format(p))
+
+def trapezoid(n):
+    a, b, N = 0, 5000, 10000
+    h = float((b - a) / (N))
+    res = 0
+    i = float(1)
+    while (i <= 10000 - 1):
+        x = i * h
+        res += borwein(x)
+        i = i + 1
+    res = ((res * 2) + borwein(a) + borwein(b))
+    calc = res * h / 2
+    p = calc - (math.pi / 2)
+    print ("\nTrapezoids:\nI{:.0f} = {:.10f}".format(arg, calc))
+    p = round(p, 10)
+    if (p == -0):
+        print("diff = 0.0000000000")
+    else:
+        print ("diff = {:.10f}".format(p))
+
+def simpson(n):
+    a, b, N = 0, 5000, 10000
+    h = float((b - a) / (N))
+    res = 0
+    i = 0
+    while (i <= 10000 - 1):
+        x = i * h
+        if (i == 0):
+            res += 4 * borwein(x + (h / 2))
+        else:
+            res += (2 * borwein(x)) + (4 * borwein(x + (h / 2)))
+        i += 1
+    res = (borwein(a) + borwein(b) + res) * h / 6
+    p = res - (math.pi / 2)
+    print ("\nSimpson:\nI{:.0f} = {:.10f}".format(arg, res))
+    p = round(p, 10)
+    if (p == -0):
+        print("diff = 0.0000000000")
+    else:
+        print ("diff = {:.10f}".format(p))
+
+    
+###################################################################
+
+
+if (len(sys.argv) != 2):
+    exit(84)
+try:
+    arg = int(sys.argv[1])
+    
+except ValueError:
+    exit(84)
+
+if (arg < 0):
+    exit(84)
+rectangle(arg)
+trapezoid(arg)
+simpson(arg)
+exit (0)
